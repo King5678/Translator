@@ -1,9 +1,0 @@
-{
-  "rules": {
-    "allow": [
-      "/pages/index/index",
-      "/pages/OCR/OCR"
-    ],
-    "deny": []
-  }
-}
