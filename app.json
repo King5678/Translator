@@ -1,0 +1,16 @@
+{
+  "pages": [
+      "pages/index/index"
+  ],
+  "window": {
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#1493FC",
+      "navigationBarTitleText": "TransWe",
+      "navigationBarTextStyle": "black",
+      "backgroundColor": "#4b3c96",
+      "navigationStyle": "custom"
+  },
+  "plugins": {
+  },
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,11 @@
+.container {
+    padding: 20px; /* 给整个容器添加内边距 */
+}
+
+.input-container {
+    margin-top: 50px; /* 增加顶部间距 */
+}
+
+.result-container {
+    margin-top: 20px; /* 增加结果框的顶部间距 */
+}

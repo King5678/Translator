@@ -1,0 +1,9 @@
+<view class="container">
+    <view class="input-container">
+        <input placeholder="输入要翻译的文本" bindinput="onInput" />
+    </view>
+    <button bindtap="onTranslate">翻译</button>
+    <view class="result-container">
+        <text>翻译结果：{{translatedText}}</text>
+    </view>
+</view>
