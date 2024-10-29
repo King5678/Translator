@@ -1,16 +1,36 @@
 {
   "pages": [
-      "pages/index/index"
+    "pages/index/index",
+    "pages/OCR/OCR"
   ],
   "window": {
-      "backgroundTextStyle": "light",
-      "navigationBarBackgroundColor": "#1493FC",
-      "navigationBarTitleText": "TransWe",
-      "navigationBarTextStyle": "black",
-      "backgroundColor": "#4b3c96",
-      "navigationStyle": "custom"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1493FC",
+    "navigationBarTitleText": "TransWe",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#4b3c96",
+    "navigationStyle": "custom"
   },
-  "plugins": {
-  },
-  "sitemapLocation": "sitemap.json"
+  "plugins": {},
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#00BFFF",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "position": "bottom",
+    "custom": false,
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "imgs/index.png",
+        "selectedIconPath": "imgs/index.png"
+      },
+      {
+        "pagePath": "pages/OCR/OCR",
+        "iconPath": "imgs/OCR.png",
+        "selectedIconPath": "imgs/OCR.png"
+      }
+    ]
+  }
 }

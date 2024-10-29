@@ -1,0 +1,59 @@
+.container {
+    padding: 20px;
+    background-color: #f9f9f9; /* 背景颜色 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-button {
+    background-color: #007aff; /* 按钮颜色 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.upload-button:hover {
+    background-color: #005bb5; /* 按钮悬停颜色 */
+}
+
+.image-container {
+    margin-top: 20px;
+    border: 1px solid #ddd; /* 图片边框 */
+    border-radius: 5px;
+    overflow: hidden;
+    width: 100%; /* 适应容器宽度 */
+}
+
+.uploaded-image {
+    width: 100%; /* 图片占满容器 */
+    height: auto; /* 保持比例 */
+}
+
+.result-container {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.result-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.text-result {
+    background-color: #fff; /* 结果背景颜色 */
+    border: 1px solid #ddd; /* 结果边框 */
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.result-text {
+    display: block;
+    margin: 5px 0; /* 每行文本的间距 */
+    font-size: 16px;
+    color: #333; /* 结果文本颜色 */
+}

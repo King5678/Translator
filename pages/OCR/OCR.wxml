@@ -1,0 +1,14 @@
+<view class="container">
+    <button class="upload-button" bindtap="uploadImg">上传图片</button>
+    
+    <view wx:if="{{src}}" class="image-container">
+        <image src="data:image/png;base64,{{src}}" mode="aspectFit" class="uploaded-image"></image>
+    </view>
+
+    <view wx:if="{{sourceText.length}}" class="result-container">
+        <text class="result-title">识别结果:</text>
+        <view class="text-result">
+            <text wx:for="{{sourceText}}" wx:key="index" class="result-text">{{item}}</text>
+        </view>
+    </view>
+</view>

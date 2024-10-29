@@ -1,39 +1,36 @@
-const apiKey = 'sk-fcc50cd5139844dfb83f4ba01d59eeb4'; // 注册 Deepseek API 的密钥
+const apiKey = 'sk-4fdba1b308d34ebeb4a389e6265136c4';
 
 function translate(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto' }) {
     return new Promise((resolve, reject) => {
+        // 设置请求的 payload 数据
+        const payload = {
+            model: "deepseek-chat",
+            messages: [
+                { role: "system", content: "You are a helpful assistant." },
+                { role: "user", content: `请将以下文本从${from}翻译成${to}：${q}` }
+            ],
+            stream: false
+        };
+
+        // 发起 wx.request 请求
         wx.request({
-            url: 'https://api.deepseek.com/translate', // 确认 API 地址
+            url: 'https://api.deepseek.com/chat/completions',
             method: 'POST',
             header: {
-                'Content-Type': 'application/json', // 修改为 JSON
-                'Authorization': `${apiKey}`
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
             },
-            data: {
-                "message": [
-                    {
-                        "content": 'You need to translate those sentences to Chinese',
-                        "role": "system"
-                    },
-                    {
-                        "content": `${q}`,
-                        "role": "user"
-                    }
-                ],
-                "model": "deepseek-chat",
-                "frequency_penalty": 0,
-                "max_tokens": 2048,
-                "response_format": {
-                    "type": "text"
-                },
-                "temperature": 1.3,
-                "top_p": 1,
-            },
+            data: payload, // 直接传递对象数据
+            timeout: 10000, // 设置超时时间，单位为毫秒
             success(res) {
-                if (res.data && res.data.translations) {
-                    resolve(res.data.translations);
+                if (res.statusCode === 200 && res.data && res.data.choices && res.data.choices[0].message.content) {
+                    
+                    // 提取并返回 DeepSeek 的翻译结果
+                    const translatedContent = res.data.choices[0].message.content;
+                    resolve(translatedContent);
                 } else {
-                    reject({ status: 'error', msg: '翻译失败' });
+                    // 处理 DeepSeek API 返回数据不完整的情况
+                    reject({ status: 'error', msg: '翻译失败，状态码：' + res.statusCode });
                     wx.showToast({
                         title: '翻译失败',
                         icon: 'none',
@@ -41,8 +38,9 @@ function translate(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto
                     });
                 }
             },
-            fail() {
-                reject({ status: 'error', msg: '翻译失败' });
+            fail(err) {
+                // 请求失败处理，包含具体错误消息
+                reject({ status: 'error', msg: `请求失败：${err.errMsg}` });
                 wx.showToast({
                     title: '网络异常',
                     icon: 'none',
