@@ -6,4 +6,17 @@
     <view class="result-container">
         <text>翻译结果：{{translatedText}}</text>
     </view>
+    <button bindtap="onExtarctWord">提取要词</button>
+    <view class="container">
+      <block wx:for="{{keywords}}" wx:key="id">
+        <view class="keyword-item">
+          <!-- 词汇部分 -->
+          <text class="keyword-title">{{item.Word}}</text>
+          <!-- 解释部分 -->
+          <view></view>
+          <text class="keyword-explanation">{{item.Explain}}</text>
+        </view>
+      </block>
+    </view>
+
 </view>

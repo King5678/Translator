@@ -1,10 +1,11 @@
 // 导入翻译工具
-import { translate } from '../../api.js'
+import { translate, ExtarctWord } from '../../api.js'
 
 Page({
     data: {
         inputText: '',
-        translatedText: ''
+        translatedText: '',
+        keywords:{}
     },
 
     onInput(event) {
@@ -34,6 +35,33 @@ Page({
                 console.error(err);
                 wx.showToast({
                     title: '翻译失败',
+                    icon: 'none',
+                    duration: 3000
+                });
+            });
+    },
+
+    onExtarctWord() {
+        const { inputText } = this.data;
+        if (!inputText) {
+            wx.showToast({
+                title: '请输入文本',
+                icon: 'none',
+                duration: 2000
+            });
+            return;
+        }
+
+        ExtarctWord(inputText)
+            .then(ExtarctedContent => {
+                this.setData({
+                    keywords: JSON.parse(ExtarctedContent)
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                wx.showToast({
+                    title: '提取失败',
                     icon: 'none',
                     duration: 3000
                 });
