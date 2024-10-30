@@ -1,11 +1,12 @@
 // 导入翻译工具
-import { translate, ExtarctWord } from '../../util/api.js'
+import { translate, ExtarctWord, SyntacticAnalysis  } from '../../util/api.js'
 
 Page({
     data: {
         inputText: '',
         translatedText: '',
-        keywords:{}
+        keywords: {},
+        syntacticAnalysis:{}
     },
 
     onInput(event) {
@@ -56,6 +57,32 @@ Page({
             .then(ExtarctedContent => {
                 this.setData({
                     keywords: JSON.parse(ExtarctedContent)
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                wx.showToast({
+                    title: '提取失败',
+                    icon: 'none',
+                    duration: 3000
+                });
+            });
+    },
+    onSyntacticAnalysis() {
+        const { inputText } = this.data;
+        if (!inputText) {
+            wx.showToast({
+                title: '请输入文本',
+                icon: 'none',
+                duration: 2000
+            });
+            return;
+        }
+
+        SyntacticAnalysis(inputText)
+            .then(ExtarctedContent => {
+                this.setData({
+                    syntacticAnalysis: JSON.parse(ExtarctedContent)
                 });
             })
             .catch(err => {

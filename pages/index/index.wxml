@@ -1,22 +1,49 @@
 <view class="container">
+    <!-- 输入框区域 -->
     <view class="input-container">
-        <input placeholder="输入要翻译的文本" bindinput="onInput" />
-    </view>
-    <button bindtap="onTranslate">翻译</button>
-    <view class="result-container">
-        <text>翻译结果：{{translatedText}}</text>
-    </view>
-    <button bindtap="onExtarctWord">提取要词</button>
-    <view class="container">
-      <block wx:for="{{keywords}}" wx:key="id">
-        <view class="keyword-item">
-          <!-- 词汇部分 -->
-          <text class="keyword-title">{{item.Word}}</text>
-          <!-- 解释部分 -->
-          <view></view>
-          <text class="keyword-explanation">{{item.Explain}}</text>
-        </view>
-      </block>
+        <text class="section-title">翻译文本</text>
+        <input placeholder="输入要翻译的文本" bindinput="onInput" class="input-field" />
+        <button bindtap="onTranslate" class="translate-button">翻译</button>
     </view>
 
+    <!-- 翻译结果显示 -->
+    <view class="result-container">
+        <text class="result-title">翻译结果：</text>
+        <text class="result-text">{{translatedText}}</text>
+    </view>
+
+    <!-- 提取关键词 -->
+    <view class="keyword-container">
+        <button bindtap="onExtarctWord" class="extract-button">提取关键词</button>
+        <text class="section-title">关键词列表</text>
+        <block wx:for="{{keywords}}" wx:key="id">
+            <view class="keyword-item">
+                <text class="keyword-title">{{item.Word}}</text>
+                <text class="keyword-explanation">{{item.Explain}}</text>
+            </view>
+        </block>
+    </view>
+
+    <!-- 句法分析 -->
+    <view class="syntax-container">
+        <button bindtap="onSyntacticAnalysis" class="syntax-button">句法分析</button>
+        <text class="section-title">句法分析结果</text>
+        
+        <view class="keyword-item">
+            <text class="keyword-title">句子结构:</text>
+            <text class="keyword-explanation">{{ syntacticAnalysis.sentence_structure }}</text>
+        </view>
+        
+        <view class="keyword-item">
+            <text class="keyword-title">关键语法点:</text>
+            <block wx:for="{{ syntacticAnalysis.key_grammar_points }}" wx:key="index">
+                <text class="keyword-explanation">{{ item }}</text>
+            </block>
+        </view>
+        
+        <view class="keyword-item">
+            <text class="keyword-title">例句:</text>
+            <text class="keyword-explanation">{{ syntacticAnalysis.example_sentence }}</text>
+        </view>
+    </view>
 </view>
