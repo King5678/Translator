@@ -1,5 +1,5 @@
 // 导入翻译工具
-import { translate, ExtarctWord } from '../../api.js'
+import { translate, ExtarctWord } from '../../util/api.js'
 
 Page({
     data: {

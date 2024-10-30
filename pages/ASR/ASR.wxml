@@ -1,0 +1,4 @@
+<view class="container">
+  <button bindtouchstart="startRecording" bindtouchend="stopRecording">按住说话</button>
+  <textarea class="result" value="{{result}}" disabled></textarea>
+</view>
