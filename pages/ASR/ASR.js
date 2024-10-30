@@ -1,4 +1,4 @@
-const sha1 = require('../../util/sha1.js')
+const hmac = require('../../util/hmac.js')
 
 Page({
   data: {
@@ -128,9 +128,9 @@ Page({
   getWebSocketUrl(date) {
     const host = "iat-api.xfyun.cn";
     const uri = "/v2/iat";
-    const appid = "你的appid";
-    const apiKey = "你的apiKey";
-    const apiSecret = "你的apiSecret";
+    const appid = "22c5c7cc";
+    const apiKey = "MjI4YjU0NjQ0ODMyODQ2NzJmNTZmMTlk";
+    const apiSecret = "de90c4244252ef0c77b6eebd58d5f351";
 
     const signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${uri} HTTP/1.1`;
     const signature = this.hmacSHA256(signatureOrigin, apiSecret);
@@ -141,7 +141,7 @@ Page({
 
   hmacSHA256(data, key) {
     // 手动实现 HMAC-SHA256
-    const hash = sha1.getHMACSHA256(data, key);
-    return sha1.arrayBufferToBase64(hash);
+    const hash = hmac.getHMACSHA256(data, key);
+    return hmac.arrayBufferToBase64(hash);
   },
 });
