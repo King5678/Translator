@@ -1,4 +1,4 @@
-import hmacSHA256 from '../../util/hmac.js'
+import { getHMACSHA256, arrayBufferToBase64, hmacSHA256 } from '../../util/hmac.js';
 
 Page({
   data: {
@@ -11,11 +11,17 @@ Page({
     const date = new Date().toUTCString();
     const wssUrl = this.getWebSocketUrl(date);
 
-    this.setData({
-      ws: wx.connectSocket({ url: wssUrl })
+    wx.connectSocket({
+      url: wssUrl,
+      success: () => {
+        console.log("WebSocket connection request sent.");
+      },
+      fail: (err) => {
+        console.error("WebSocket connection request failed:", err);
+      }
     });
 
-    this.data.ws.onOpen(() => {
+    wx.onSocketOpen(() => {
       console.log("WebSocket connected!");
 
       const recorderManager = wx.getRecorderManager();
@@ -33,22 +39,22 @@ Page({
       });
     });
 
-    this.data.ws.onMessage((message) => {
+    wx.onSocketMessage((message) => {
       this.handleMessage(message);
     });
 
-    this.data.ws.onClose(() => {
+    wx.onSocketClose(() => {
       console.log("WebSocket connection closed.");
     });
 
-    this.data.ws.onError((err) => {
+    wx.onSocketError((err) => {
       console.error("WebSocket error:", err);
     });
   },
 
   stopRecording() {
     if (this.data.ws) {
-      this.data.ws.close();
+      wx.closeSocket();
     }
   },
 
@@ -94,7 +100,7 @@ Page({
       };
     }
 
-    this.data.ws.send({
+    wx.sendSocketMessage({
       data: JSON.stringify(frame),
       success: () => console.log("Data sent successfully"),
       fail: (err) => console.error("Failed to send data:", err)
@@ -111,7 +117,7 @@ Page({
     let str = "";
     if (res.data.status === 2) {
       console.log("Final result received.");
-      this.data.ws.close();
+      wx.closeSocket();
     } else {
       console.log("Intermediate result received.");
     }
@@ -128,14 +134,25 @@ Page({
   getWebSocketUrl(date) {
     const host = "iat-api.xfyun.cn";
     const uri = "/v2/iat";
-    const appid = "22c5c7cc";
     const apiKey = "MjI4YjU0NjQ0ODMyODQ2NzJmNTZmMTlk";
     const apiSecret = "de90c4244252ef0c77b6eebd58d5f351";
 
-    const signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${uri} HTTP/1.1`;
-    const signature = hmacSHA256(signatureOrigin, apiSecret);
-    const authorization = wx.arrayBufferToBase64(wx.stringToArrayBuffer(authorizationOrigin));
+      const signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${uri} HTTP/1.1`;
+      const signature = hmacSHA256(signatureOrigin, apiSecret);
 
-    return `wss://iat-api.xfyun.cn/v2/iat?authorization=${authorization}&date=${date}&host=${host}`;
-  }
+      // 定义 authorizationOrigin
+      const authorizationOrigin = `api_key="${apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`;
+
+      // 使用 TextEncoder 将字符串转换为 ArrayBuffer
+      const encoder = new TextEncoder();
+      const authorizationBuffer = encoder.encode(authorizationOrigin).buffer;
+
+      const authorization = arrayBufferToBase64(authorizationBuffer);
+
+      // 手动构建查询字符串
+      const queryString = `authorization=${encodeURIComponent(authorization)}&date=${encodeURIComponent(date)}&host=${encodeURIComponent(host)}`;
+
+      return `wss://iat-api.xfyun.cn/v2/iat?${queryString}`;
+  },
+
 });

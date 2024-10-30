@@ -21,7 +21,6 @@ function sha256(message) {
 
     const utf8Encode = new TextEncoder();
     const data = utf8Encode.encode(message);
-    const dataView = new DataView(data.buffer);
     const dataLength = data.length;
     const blockSize = 64;
     const padding = new Uint8Array(blockSize - ((dataLength + 9) % blockSize));
@@ -30,10 +29,17 @@ function sha256(message) {
     paddedData[dataLength] = 0x80;
     new DataView(paddedData.buffer).setUint32(paddedData.length - 8, dataLength * 8, false);
 
+    const dataView = new DataView(paddedData.buffer);
+
     for (let i = 0; i < paddedData.length; i += blockSize) {
         const words = new Uint32Array(64);
         for (let j = 0; j < 16; j++) {
-            words[j] = dataView.getUint32(i + j * 4, false);
+            const offset = i + j * 4;
+            if (offset + 3 < paddedData.length) {
+                words[j] = dataView.getUint32(offset, false);
+            } else {
+                words[j] = 0;
+            }
         }
         for (let j = 16; j < 64; j++) {
             const s0 = rightRotate(words[j - 15], 7) ^ rightRotate(words[j - 15], 18) ^ (words[j - 15] >>> 3);
@@ -78,9 +84,8 @@ function sha256(message) {
 
     return hash;
 }
-
 // HMAC-SHA256 实现
-function getHMACSHA256(data, key) {
+export function getHMACSHA256(data, key) {
     const blockSize = 64;
     const keyBytes = new TextEncoder().encode(key);
     const keyPadded = new Uint8Array(blockSize);
@@ -98,7 +103,7 @@ function getHMACSHA256(data, key) {
 }
 
 // Base64 编码实现
-function arrayBufferToBase64(buffer) {
+export function arrayBufferToBase64(buffer) {
     const binary = new Uint8Array(buffer);
     let base64 = '';
     const encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -150,7 +155,7 @@ function arrayBufferToBase64(buffer) {
     return base64;
 }
 
-function hmacSHA256(data, key) {
-    const hash = hmac.getHMACSHA256(data, key);
-    return hmac.arrayBufferToBase64(hash);
-  }
+export function hmacSHA256(data, key) {
+    const hash = getHMACSHA256(data, key);
+    return arrayBufferToBase64(hash);
+}
