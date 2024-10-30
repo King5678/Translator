@@ -19,4 +19,25 @@
       </block>
     </view>
 
+    <button bindtap="onSyntacticAnalysis">句法分析</button>
+    <view class="container">
+      <view class="keyword-item">
+        <text class="keyword-title">句子结构:</text>
+        <view></view>
+        <text  class="keyword-explanation">{{ syntacticAnalysis.sentence_structure }}</text>
+      </view>
+      <view class="keyword-item">
+        <text class="keyword-title">关键语法点:</text>
+        <block wx:for="{{ syntacticAnalysis.key_grammar_points }}" wx:key="index">
+          <view></view>
+          <text class="keyword-explanation">{{ item }}</text>
+        </block>
+      </view>
+      <view class="keyword-item">
+        <text class="keyword-title">例句:</text>
+        <view></view>
+        <text class="keyword-explanation">{{ syntacticAnalysis.example_sentence }}</text>
+      </view>
+    </view>
+
 </view>
