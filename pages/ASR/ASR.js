@@ -1,4 +1,4 @@
-const hmac = require('../../util/hmac.js')
+import hmacSHA256 from '../../util/hmac.js'
 
 Page({
   data: {
@@ -133,15 +133,9 @@ Page({
     const apiSecret = "de90c4244252ef0c77b6eebd58d5f351";
 
     const signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${uri} HTTP/1.1`;
-    const signature = this.hmacSHA256(signatureOrigin, apiSecret);
+    const signature = hmacSHA256(signatureOrigin, apiSecret);
     const authorization = wx.arrayBufferToBase64(wx.stringToArrayBuffer(authorizationOrigin));
 
     return `wss://iat-api.xfyun.cn/v2/iat?authorization=${authorization}&date=${date}&host=${host}`;
-  },
-
-  hmacSHA256(data, key) {
-    // 手动实现 HMAC-SHA256
-    const hash = hmac.getHMACSHA256(data, key);
-    return hmac.arrayBufferToBase64(hash);
-  },
+  }
 });
