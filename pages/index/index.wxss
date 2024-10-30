@@ -1,16 +1,43 @@
-
-.input-container {
-    margin-top: 50px; /* 增加顶部间距 */
-}
-
-.result-container {
-    margin-top: 20px; /* 增加结果框的顶部间距 */
-}
-
-/* 整体容器样式 */
 .container {
-    padding: 16px;
-    background-color: #f7f7f7;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.input-container,
+.result-container,
+.keyword-container,
+.syntax-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.translate-button,
+.extract-button,
+.syntax-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007aff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 /* 单个关键词项的样式 */
