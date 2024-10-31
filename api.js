@@ -269,59 +269,59 @@ export function CulturalBackground(q, { from = 'auto', to = 'auto' } = { from: '
         });
     });
 }
-    export function Summary(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto' }) {
-        return new Promise((resolve, reject) => {
-            // 设置请求的 payload 数据
-            const payload = {
-                model: "deepseek-chat",
-                messages: [
-                    { role: "system", content: "You are a helpful assistant." },
-                    {
-                        role: "user", content: `
+export function Summary(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto' }) {
+    return new Promise((resolve, reject) => {
+        // 设置请求的 payload 数据
+        const payload = {
+            model: "deepseek-chat",
+            messages: [
+                { role: "system", content: "You are a helpful assistant." },
+                {
+                    role: "user", content: `
 目标： 请简要总结提炼输入外语语料，结果应适合学生阅读。
 输入句子语言：${from}，预期输出的解释语言：${to}
 输入句子： ${q}
 ` }
-                ],
-                stream: false
-            };
+            ],
+            stream: false
+        };
 
-            // 发起 wx.request 请求
-            wx.request({
-                url: 'https://api.deepseek.com/chat/completions',
-                method: 'POST',
-                header: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-                },
-                data: payload, // 直接传递对象数据
-                timeout: 60000, // 设置超时时间，单位为毫秒
-                success(res) {
-                    if (res.statusCode === 200 && res.data && res.data.choices && res.data.choices[0].message.content) {
+        // 发起 wx.request 请求
+        wx.request({
+            url: 'https://api.deepseek.com/chat/completions',
+            method: 'POST',
+            header: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            data: payload, // 直接传递对象数据
+            timeout: 60000, // 设置超时时间，单位为毫秒
+            success(res) {
+                if (res.statusCode === 200 && res.data && res.data.choices && res.data.choices[0].message.content) {
 
-                        // 提取并返回 DeepSeek 的翻译结果
-                        const ExtarctedContent = res.data.choices[0].message.content.replace(/^```json|```$/g, "");
-                        console.log(ExtarctedContent)
-                        resolve(ExtarctedContent);
-                    } else {
-                        // 处理 DeepSeek API 返回数据不完整的情况
-                        reject({ status: 'error', msg: '分析失败，状态码：' + res.statusCode });
-                        wx.showToast({
-                            title: '分析失败',
-                            icon: 'none',
-                            duration: 3000
-                        });
-                    }
-                },
-                fail(err) {
-                    // 请求失败处理，包含具体错误消息
-                    reject({ status: 'error', msg: `请求失败：${err.errMsg}` });
+                    // 提取并返回 DeepSeek 的翻译结果
+                    const ExtarctedContent = res.data.choices[0].message.content.replace(/^```json|```$/g, "");
+                    console.log(ExtarctedContent)
+                    resolve(ExtarctedContent);
+                } else {
+                    // 处理 DeepSeek API 返回数据不完整的情况
+                    reject({ status: 'error', msg: '分析失败，状态码：' + res.statusCode });
                     wx.showToast({
-                        title: '网络异常',
+                        title: '分析失败',
                         icon: 'none',
                         duration: 3000
                     });
                 }
-            });
+            },
+            fail(err) {
+                // 请求失败处理，包含具体错误消息
+                reject({ status: 'error', msg: `请求失败：${err.errMsg}` });
+                wx.showToast({
+                    title: '网络异常',
+                    icon: 'none',
+                    duration: 3000
+                });
+            }
         });
+    });
 }
