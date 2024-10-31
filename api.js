@@ -137,6 +137,7 @@ export function SyntacticAnalysis(q, { from = 'auto', to = 'auto' } = { from: 'a
                 {
                     role: "user", content: `
 目标： 分析以下句子，指出其语法结构，并简要解释关键语法点。结果应适合学生阅读。
+输入句子语言：${from}，预期输出的解释语言：${to}
 输入句子： ${q}
 输出格式：
 句子结构： 将句子分解为主语、谓语、宾语等主要成分，并用括号标注。
@@ -195,4 +196,132 @@ export function SyntacticAnalysis(q, { from = 'auto', to = 'auto' } = { from: 'a
             }
         });
     });
+}
+export function CulturalBackground(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto' }) {
+    return new Promise((resolve, reject) => {
+        // 设置请求的 payload 数据
+        const payload = {
+            model: "deepseek-chat",
+            messages: [
+                { role: "system", content: "You are a helpful assistant." },
+                {
+                    role: "user", content: `
+目标： 请分析以下句子背后的文化背景，并以JSON格式返回3-4个要点，结果应适合学生阅读。
+输入句子语言：${from}，预期输出的解释语言：${to}
+输入句子： ${q}
+输出格式：
+示例：
+输入句子： In the United States, people celebrate Thanksgiving by gathering with family and friends, and eating a large meal that typically includes turkey.
+输出, 以json格式：
+{
+      "关键词1":{
+        "name": "感恩节",
+        "description": "感恩节是美国的一个全国性节日，在11月的第四个星期四庆祝。它起源于丰收节，具有宗教和文化传统的历史根源。",
+        "related_customs": ["家庭聚会", "盛宴", "游行", "橄榄球比赛"]
+      },
+      "关键词2":{
+        "name": "传统感恩节大餐",
+        "description": "美国传统的感恩节大餐通常包括火鸡、 stuffing（填料）、土豆泥、蔓越莓酱和南瓜派。这顿饭象征着感恩和丰盛。",
+        "related_customs": ["烹饪火鸡", "准备配菜", "烘焙甜点"]
+      }
+}
+` }
+            ],
+            stream: false
+        };
+
+        // 发起 wx.request 请求
+        wx.request({
+            url: 'https://api.deepseek.com/chat/completions',
+            method: 'POST',
+            header: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            data: payload, // 直接传递对象数据
+            timeout: 60000, // 设置超时时间，单位为毫秒
+            success(res) {
+                if (res.statusCode === 200 && res.data && res.data.choices && res.data.choices[0].message.content) {
+
+                    // 提取并返回 DeepSeek 的翻译结果
+                    const ExtarctedContent = res.data.choices[0].message.content.replace(/^```json|```$/g, "");
+                    console.log(ExtarctedContent)
+                    resolve(ExtarctedContent);
+                } else {
+                    // 处理 DeepSeek API 返回数据不完整的情况
+                    reject({ status: 'error', msg: '分析失败，状态码：' + res.statusCode });
+                    wx.showToast({
+                        title: '分析失败',
+                        icon: 'none',
+                        duration: 3000
+                    });
+                }
+            },
+            fail(err) {
+                // 请求失败处理，包含具体错误消息
+                reject({ status: 'error', msg: `请求失败：${err.errMsg}` });
+                wx.showToast({
+                    title: '网络异常',
+                    icon: 'none',
+                    duration: 3000
+                });
+            }
+        });
+    });
+}
+    export function Summary(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto' }) {
+        return new Promise((resolve, reject) => {
+            // 设置请求的 payload 数据
+            const payload = {
+                model: "deepseek-chat",
+                messages: [
+                    { role: "system", content: "You are a helpful assistant." },
+                    {
+                        role: "user", content: `
+目标： 请简要总结提炼输入外语语料，结果应适合学生阅读。
+输入句子语言：${from}，预期输出的解释语言：${to}
+输入句子： ${q}
+` }
+                ],
+                stream: false
+            };
+
+            // 发起 wx.request 请求
+            wx.request({
+                url: 'https://api.deepseek.com/chat/completions',
+                method: 'POST',
+                header: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                data: payload, // 直接传递对象数据
+                timeout: 60000, // 设置超时时间，单位为毫秒
+                success(res) {
+                    if (res.statusCode === 200 && res.data && res.data.choices && res.data.choices[0].message.content) {
+
+                        // 提取并返回 DeepSeek 的翻译结果
+                        const ExtarctedContent = res.data.choices[0].message.content.replace(/^```json|```$/g, "");
+                        console.log(ExtarctedContent)
+                        resolve(ExtarctedContent);
+                    } else {
+                        // 处理 DeepSeek API 返回数据不完整的情况
+                        reject({ status: 'error', msg: '分析失败，状态码：' + res.statusCode });
+                        wx.showToast({
+                            title: '分析失败',
+                            icon: 'none',
+                            duration: 3000
+                        });
+                    }
+                },
+                fail(err) {
+                    // 请求失败处理，包含具体错误消息
+                    reject({ status: 'error', msg: `请求失败：${err.errMsg}` });
+                    wx.showToast({
+                        title: '网络异常',
+                        icon: 'none',
+                        duration: 3000
+                    });
+                }
+            });
+        });
 }
