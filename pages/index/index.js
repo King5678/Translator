@@ -1,5 +1,5 @@
 // 导入翻译工具
-import { translate, ExtarctWord, SyntacticAnalysis, CulturalBackground,Summary } from '../../api.js'
+import { translate, ExtarctWord, SyntacticAnalysis, CulturalBackground,Summary } from '../../util/api.js'
 
 Page({
     data: {
