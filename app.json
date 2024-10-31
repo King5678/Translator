@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/OCR/OCR"
+    "pages/OCR/OCR",
+    "pages/ASR/ASR"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -30,6 +31,11 @@
         "pagePath": "pages/OCR/OCR",
         "iconPath": "imgs/OCR.png",
         "selectedIconPath": "imgs/OCR.png"
+      },
+      {
+        "pagePath": "pages/ASR/ASR",
+        "iconPath": "imgs/ASR.png",
+        "selectedIconPath": "imgs/ASR.png"
       }
     ]
   }
