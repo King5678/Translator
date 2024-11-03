@@ -10,7 +10,6 @@ Page({
   startRecording() {
     const date = new Date().toUTCString();
     const wssUrl = this.getWebSocketUrl(date);
-
     wx.connectSocket({
       url: wssUrl,
       success: () => {
@@ -18,6 +17,9 @@ Page({
       },
       fail: (err) => {
         console.error("WebSocket connection request failed:", err);
+        if (err.errCode) {
+          console.error("Error code:", err.errCode);
+        }
       }
     });
 
