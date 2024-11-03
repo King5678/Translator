@@ -37,16 +37,6 @@
         "iconPath": "imgs/ASR.png",
         "selectedIconPath": "imgs/ASR.png"
       }
-    ],
-    "permission": {
-    "scope": {
-      "record": {
-        "desc": "你的应用需要使用麦克风进行录音"
-      },
-      "writePhotos": {
-        "desc": "你的应用需要保存录音文件"
-      }
-    }
-  }
+    ]
   }
 }

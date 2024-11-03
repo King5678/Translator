@@ -88,10 +88,11 @@ Page({
                   format: 'm4a', // 确保格式为 m4a
                   rate: 16000,
                   channel: 1,
-                  cuid: 'test_cuid', // 确保唯一标识有效
+                  cuid: 'wv8MAR8mjYpkTYnjHvkJsMJWgTWCfGJT', // 确保唯一标识有效
+                  dev_pid:80001,
                   token: token,
-                  len: len, // 使用实际的文件大小
-                  speech: audioData // 确保是有效的 Base64 字符串
+                  speech: audioData, // 确保是有效的 Base64 字符串
+                  len: len // 使用实际的文件大小
                 }),
                 header: {
                   'Content-Type': 'application/json'
