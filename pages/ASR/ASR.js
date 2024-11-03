@@ -1,160 +1,126 @@
-import { getHMACSHA256, arrayBufferToBase64, hmacSHA256 } from '../../util/hmac.js';
+const app = getApp();
 
 Page({
   data: {
     result: '',
-    ws: null,
-    status: 0,
+    recorderManager: null,
+    audioFilePath: ''
+  },
+
+  onLoad() {
+    this.initRecorder();
+  },
+
+  initRecorder() {
+    this.setData({
+      recorderManager: wx.getRecorderManager()
+    });
+
+    this.data.recorderManager.onStart(() => {
+      console.log('录音开始');
+    });
+
+    this.data.recorderManager.onStop((res) => {
+      console.log('录音结束', res);
+      this.data.audioFilePath = res.tempFilePath;
+      this.uploadAudio(res.tempFilePath);
+    });
   },
 
   startRecording() {
-    const date = new Date().toUTCString();
-    const wssUrl = this.getWebSocketUrl(date);
-    wx.connectSocket({
-      url: wssUrl,
-      success: () => {
-        console.log("WebSocket connection request sent.");
-      },
-      fail: (err) => {
-        console.error("WebSocket connection request failed:", err);
-        if (err.errCode) {
-          console.error("Error code:", err.errCode);
-        }
-      }
-    });
-
-    wx.onSocketOpen(() => {
-      console.log("WebSocket connected!");
-
-      const recorderManager = wx.getRecorderManager();
-      recorderManager.start({
-        format: 'pcm',
-        sampleRate: 16000,
-      });
-
-      recorderManager.onRecordingProgress((res) => {
-        // 可以处理录音进度
-      });
-
-      recorderManager.onStop((res) => {
-        this.sendAudioData(res.tempFilePath);
-      });
-    });
-
-    wx.onSocketMessage((message) => {
-      this.handleMessage(message);
-    });
-
-    wx.onSocketClose(() => {
-      console.log("WebSocket connection closed.");
-    });
-
-    wx.onSocketError((err) => {
-      console.error("WebSocket error:", err);
-    });
+    const options = {
+      duration: 60000,
+      sampleRate: 16000, // 采样率
+      numberOfChannels: 1, // 单声道
+      encodeBitRate: 48000, // 比特率
+      format: 'm4a' // 格式修改为 m4a
+    };
+    this.data.recorderManager.start(options);
   },
 
   stopRecording() {
-    if (this.data.ws) {
-      wx.closeSocket();
-    }
+    this.data.recorderManager.stop();
   },
 
-  sendAudioData(filePath) {
+  getAccessToken: function() {
+    return new Promise((resolve, reject) => {
+      const AK = "ZvUFDMQBpRn2nVwfteh4qcMS"; 
+      const SK = "5CtKraOlQTiTrmGszUKwnmGE6MYt318Y";
+
+      wx.request({
+        url: 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + AK + '&client_secret=' + SK,
+        method: 'POST',
+        success: function(res) {
+          if (res.data && res.data.access_token) {
+            resolve(res.data.access_token);
+          } else {
+            reject('获取 Access Token 失败');
+          }
+        },
+        fail: function(error) {
+          reject(error);
+        }
+      });
+    });
+  },
+
+  uploadAudio(filePath) {
     wx.getFileSystemManager().readFile({
       filePath: filePath,
       encoding: 'base64',
       success: (res) => {
-        this.sendWebSocketData(res.data);
+        const audioData = res.data;
+
+        console.log('音频数据:', audioData);
+
+        // 获取音频文件的原始大小
+        wx.getFileSystemManager().getFileInfo({
+          filePath: filePath,
+          success: (info) => {
+            const len = info.size; // 原始文件大小
+            console.log('文件大小:',len);
+
+            this.getAccessToken().then(token => {
+              wx.request({
+                url: 'https://vop.baidu.com/pro_api', // 确保使用正确的API地址
+                method: 'POST',
+                data: JSON.stringify({
+                  format: 'm4a', // 确保格式为 m4a
+                  rate: 16000,
+                  channel: 1,
+                  cuid: 'test_cuid', // 确保唯一标识有效
+                  token: token,
+                  len: len, // 使用实际的文件大小
+                  speech: audioData // 确保是有效的 Base64 字符串
+                }),
+                header: {
+                  'Content-Type': 'application/json'
+                },
+                success: (res) => {
+                  if (res.data.err_no === 0) {
+                    this.setData({
+                      result: res.data.result[0]
+                    });
+                  } else {
+                    console.error('识别错误:', res.data.err_msg);
+                  }
+                },
+                fail: (err) => {
+                  console.error('请求失败:', err);
+                }
+              });
+            }).catch(error => {
+              console.error(error);
+            });
+          },
+          fail: (err) => {
+            console.error('获取文件信息失败:', err);
+          }
+        });
       },
       fail: (err) => {
-        console.error("Read file failed:", err);
+        console.error('读取文件失败:', err);
       }
     });
-  },
-
-  sendWebSocketData(audio) {
-    const frameDataSection = {
-      status: this.data.status,
-      format: "audio/L16;rate=16000",
-      audio: audio,
-      encoding: "raw"
-    };
-
-    let frame;
-    if (this.data.status === 0) {
-      frame = {
-        common: {
-          app_id: "你的appid"
-        },
-        business: {
-          language: "zh_cn",
-          domain: "iat",
-          accent: "mandarin",
-          dwa: "wpgs"
-        },
-        data: frameDataSection
-      };
-      this.data.status = 1;
-    } else {
-      frame = {
-        data: frameDataSection
-      };
-    }
-
-    wx.sendSocketMessage({
-      data: JSON.stringify(frame),
-      success: () => console.log("Data sent successfully"),
-      fail: (err) => console.error("Failed to send data:", err)
-    });
-  },
-
-  handleMessage(message) {
-    const res = JSON.parse(message.data);
-    if (res.code !== 0) {
-      console.error(`Error code ${res.code}: ${res.message}`);
-      return;
-    }
-
-    let str = "";
-    if (res.data.status === 2) {
-      console.log("Final result received.");
-      wx.closeSocket();
-    } else {
-      console.log("Intermediate result received.");
-    }
-
-    res.data.result.ws.forEach(j => {
-      j.cw.forEach(k => {
-        str += k.w;
-      });
-    });
-
-    this.setData({ result: this.data.result + str });
-  },
-
-  getWebSocketUrl(date) {
-    const host = "iat-api.xfyun.cn";
-    const uri = "/v2/iat";
-    const apiKey = "MjI4YjU0NjQ0ODMyODQ2NzJmNTZmMTlk";
-    const apiSecret = "de90c4244252ef0c77b6eebd58d5f351";
-
-      const signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${uri} HTTP/1.1`;
-      const signature = hmacSHA256(signatureOrigin, apiSecret);
-
-      // 定义 authorizationOrigin
-      const authorizationOrigin = `api_key="${apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`;
-
-      // 使用 TextEncoder 将字符串转换为 ArrayBuffer
-      const encoder = new TextEncoder();
-      const authorizationBuffer = encoder.encode(authorizationOrigin).buffer;
-
-      const authorization = arrayBufferToBase64(authorizationBuffer);
-
-      // 手动构建查询字符串
-      const queryString = `authorization=${encodeURIComponent(authorization)}&date=${encodeURIComponent(date)}&host=${encodeURIComponent(host)}`;
-
-      return `wss://iat-api.xfyun.cn/v2/iat?${queryString}`;
-  },
-
+  }
 });
