@@ -46,4 +46,27 @@
             <text class="keyword-explanation">{{ syntacticAnalysis.example_sentence }}</text>
         </view>
     </view>
+
+    <!-- 文化背景知识介绍 -->
+    <view class="keyword-container">
+        <button bindtap="onCulturalBackground" class="extract-button">提取文化背景</button>
+        <text class="section-title">文化背景列表</text>
+        <block wx:for="{{culturalBackground}}" wx:key="id">
+            <view class="keyword-item">
+                <text class="keyword-title">{{item.name}}</text>
+                <text class="keyword-explanation">{{item.description}}</text>
+                <text class="section-title">相关词：</text>
+                <block wx:for="{{item.related_customs}}" wx:key="index">
+                    <text class="keyword-explanation">- {{item}}</text>
+                </block>
+            </view>
+        </block>
+    </view>
+
+    <!-- 总结结果显示 -->
+    <view class="result-container">
+        <button bindtap="onSummary" class="translate-button">总结</button>
+        <text class="result-title">总结结果：</text>
+        <text class="result-text">{{summary}}</text>
+    </view>
 </view>
