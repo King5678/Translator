@@ -1,59 +1,80 @@
+/* 容器整体样式 */
 .container {
-    padding: 20px;
-    background-color: #f9f9f9; /* 背景颜色 */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
 }
 
+/* 按钮容器样式 */
+.button-container {
+    margin-top: 40px; /* 添加此项以下移按钮 */
+}
+
+/* 上传图片按钮样式 */
 .upload-button {
-    background-color: #007aff; /* 按钮颜色 */
-    color: white;
+    background-color: #4a90e2; /* 蓝色 */
+    color: #ffffff;
+    font-size: 24px;
     border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
+    border-radius: 25px;
+    padding: 15px 40px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    flex-shrink: 0; /* 防止按钮被挤压 */
 }
 
-.upload-button:hover {
-    background-color: #005bb5; /* 按钮悬停颜色 */
+/* 按钮交互效果 */
+.upload-button:active {
+    background-color: #357ab7; /* 深蓝色用于按下时的效果 */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
+
+/* 图片容器样式 */
 .image-container {
-    margin-top: 20px;
-    border: 1px solid #ddd; /* 图片边框 */
-    border-radius: 5px;
-    overflow: hidden;
-    width: 100%; /* 适应容器宽度 */
+    width: 90%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
 }
 
+/* 上传的图片样式 */
 .uploaded-image {
-    width: 100%; /* 图片占满容器 */
-    height: auto; /* 保持比例 */
-}
-
-.result-container {
-    margin-top: 20px;
     width: 100%;
+    max-width: 400px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ddd;
 }
 
+/* 结果容器样式 */
+.result-container {
+    width: 90%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* 标题文本样式 */
 .result-title {
-    font-size: 18px;
+    font-size: 24px;
+    color: #333;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-.text-result {
-    background-color: #fff; /* 结果背景颜色 */
-    border: 1px solid #ddd; /* 结果边框 */
-    border-radius: 5px;
-    padding: 10px;
-}
-
+/* OCR结果文本样式 */
 .result-text {
-    display: block;
-    margin: 5px 0; /* 每行文本的间距 */
-    font-size: 16px;
-    color: #333; /* 结果文本颜色 */
+    font-size: 20px;
+    color: #555;
+    margin: 5px 0;
 }

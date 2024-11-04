@@ -1,10 +1,22 @@
 <view class="container">
-    <!-- 输入框区域 -->
-    <view class="input-container">
-        <text class="section-title">翻译文本</text>
-        <input placeholder="输入要翻译的文本" bindinput="onInput" class="input-field" />
-        <button bindtap="onTranslate" class="translate-button">翻译</button>
-    </view>
+<!-- 输入框区域 -->
+<view class="input-container">
+    <text class="section-title">翻译文本</text>
+    <input 
+        placeholder="输入要翻译的文本" 
+        bindinput="onInput" 
+        class="input-field" 
+        value="{{displayResult}}"
+    />
+    <button bindtap="onTranslate" class="translate-button">翻译</button>
+</view>
+
+
+<view class="container">
+  <button bindtap="chooseResult" class="import-button">导入</button>
+  <input value="{{displayResult}}" placeholder="选择一个结果显示" disabled />
+</view>
+
 
     <!-- 翻译结果显示 -->
     <view class="result-container">

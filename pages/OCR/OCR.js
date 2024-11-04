@@ -77,6 +77,7 @@ Page({
                         that.setData({
                             sourceText: res.data.words_result.map(item => item.words) // 提取文字
                         });
+                        app.globalData.ocrResult = that.data.sourceText;
                     }
                 },
                 fail: function(res) {

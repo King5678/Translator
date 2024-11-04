@@ -1,4 +1,24 @@
 <view class="container">
-  <button bindtouchstart="startRecording" bindtouchend="stopRecording">按住说话</button>
-  <text>识别结果: {{result}}</text>
+
+    <!-- 识别结果显示 -->
+    <view class="result-container">
+        <text class="result-title">识别结果：</text>
+        <text class="result-text">{{result}}</text>
+    </view>
+
+    <!-- 按钮区域 -->
+    <view class="button-container">
+        <button 
+            bindtouchstart="startRecording" 
+            bindtouchend="stopRecording" 
+            class="record-button">
+            按住录音
+        </button>
+    </view>
+    
+    <!-- 翻译结果显示 -->
+    <view class="result-container">
+        <text class="result-title">翻译结果：</text>
+        <text class="result-text">{{translatedResult}}</text>
+    </view>
 </view>

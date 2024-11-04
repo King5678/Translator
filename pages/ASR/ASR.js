@@ -1,10 +1,15 @@
 const app = getApp();
+const apiKey = "sk-4fdba1b308d34ebeb4a389e6265136c4"; // 替换为实际的 API 密钥
 
 Page({
   data: {
     result: '',
+    translatedResult: '',
     recorderManager: null,
-    audioFilePath: ''
+    audioFilePath: '',
+    sourceLanguage: 'en', // 源语言默认值
+    targetLanguage: 'zh', // 目标语言默认值
+    languages: ['zh', 'en', 'fr', 'de'] // 支持的语言列表
   },
 
   onLoad() {
@@ -30,10 +35,10 @@ Page({
   startRecording() {
     const options = {
       duration: 60000,
-      sampleRate: 16000, // 采样率
-      numberOfChannels: 1, // 单声道
-      encodeBitRate: 48000, // 比特率
-      format: 'm4a' // 格式修改为 m4a
+      sampleRate: 16000,
+      numberOfChannels: 1,
+      encodeBitRate: 48000,
+      format: 'm4a'
     };
     this.data.recorderManager.start(options);
   },
@@ -68,45 +73,41 @@ Page({
     wx.getFileSystemManager().readFile({
       filePath: filePath,
       encoding: 'base64',
-      success: (res) => {
+      success: (res) => {  // 使用箭头函数
         const audioData = res.data;
-
-        console.log('音频数据:', audioData);
-
-        // 获取音频文件的原始大小
+  
         wx.getFileSystemManager().getFileInfo({
           filePath: filePath,
-          success: (info) => {
-            const len = info.size; // 原始文件大小
-            console.log('文件大小:',len);
-
+          success: (info) => {  // 使用箭头函数
+            const len = info.size;
+  
             this.getAccessToken().then(token => {
               wx.request({
-                url: 'https://vop.baidu.com/pro_api', // 确保使用正确的API地址
+                url: 'https://vop.baidu.com/pro_api',
                 method: 'POST',
                 data: JSON.stringify({
-                  format: 'm4a', // 确保格式为 m4a
+                  format: 'm4a',
                   rate: 16000,
                   channel: 1,
-                  cuid: 'wv8MAR8mjYpkTYnjHvkJsMJWgTWCfGJT', // 确保唯一标识有效
-                  dev_pid:80001,
+                  cuid: 'YOUR_CUID',
+                  dev_pid: 80001,
                   token: token,
-                  speech: audioData, // 确保是有效的 Base64 字符串
-                  len: len // 使用实际的文件大小
+                  speech: audioData,
+                  len: len
                 }),
                 header: {
                   'Content-Type': 'application/json'
                 },
-                success: (res) => {
+                success: (res) => {  // 使用箭头函数
                   if (res.data.err_no === 0) {
-                    this.setData({
-                      result: res.data.result[0]
-                    });
+                    this.setData({ result: res.data.result[0] });
+                    app.globalData.asrResult = result;
+                    this.translate(res.data.result[0], { from: this.data.sourceLanguage, to: this.data.targetLanguage });
                   } else {
                     console.error('识别错误:', res.data.err_msg);
                   }
                 },
-                fail: (err) => {
+                fail: (err) => {  // 使用箭头函数
                   console.error('请求失败:', err);
                 }
               });
@@ -123,5 +124,44 @@ Page({
         console.error('读取文件失败:', err);
       }
     });
+  },  
+
+  translate(q, { from = 'auto', to = 'auto' } = {}) {
+    return new Promise((resolve, reject) => {
+      const payload = {
+        model: "deepseek-chat",
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: `请将以下文本从${from}翻译成${to}：${q}` }
+        ],
+        stream: false
+      };
+  
+      wx.request({
+        url: 'https://api.deepseek.com/chat/completions',
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        data: payload,
+        timeout: 10000,
+        success: (res) => {  // 使用箭头函数
+          if (res.statusCode === 200 && res.data && res.data.choices && res.data.choices[0].message.content) {
+            const translatedContent = res.data.choices[0].message.content;
+            this.setData({ translatedResult: translatedContent });  // 这里可以正常使用 this
+            resolve(translatedContent);
+          } else {
+            reject({ status: 'error', msg: '翻译失败，状态码：' + res.statusCode });
+            wx.showToast({ title: '翻译失败', icon: 'none', duration: 3000 });
+          }
+        },
+        fail: (err) => {  // 使用箭头函数
+          reject({ status: 'error', msg: `请求失败：${err.errMsg}` });
+          wx.showToast({ title: '网络异常', icon: 'none', duration: 3000 });
+        }
+      });
+    });
   }
+  
 });

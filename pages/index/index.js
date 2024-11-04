@@ -1,5 +1,5 @@
 // 导入翻译工具
-import { translate, ExtarctWord, SyntacticAnalysis, CulturalBackground,Summary } from '../../util/api.js'
+import { translate, ExtractWord, SyntacticAnalysis, CulturalBackground, Summary } from './api.js';
 
 Page({
     data: {
@@ -8,8 +8,20 @@ Page({
         keywords: {},
         syntacticAnalysis: {},
         culturalBackground: {},
-        summary:''
+        summary: '',
+        asrInput: '',
+        ocrInput: '',
+        displayResult: ''
     },
+
+    onShow() {
+        const app = getApp();
+        this.setData({
+            asrInput: app.globalData.asrResult || '', // 确保有默认值
+            ocrInput: app.globalData.ocrResult || ''  // 确保有默认值
+        });
+    },
+    
 
     onInput(event) {
         this.setData({
@@ -44,7 +56,33 @@ Page({
             });
     },
 
-    onExtarctWord() {
+    chooseResult() {
+        const { asrInput, ocrInput } = this.data;
+        console.log('ASR Input:', asrInput);
+        console.log('OCR Input:', ocrInput);
+        
+        wx.showActionSheet({
+            itemList: ['显示 ASR 结果', '显示 OCR 结果'],
+            success: (res) => {
+                if (res.tapIndex === 0 && asrInput) {
+                    this.setData({ displayResult: asrInput });
+                } else if (res.tapIndex === 1 && ocrInput) {
+                    this.setData({ displayResult: ocrInput });
+                } else {
+                    wx.showToast({
+                        title: '没有可用的结果',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                }
+            },
+            fail: (err) => {
+                console.log(err.errMsg);
+            }
+        });
+    },
+
+    onExtractWord() {
         const { inputText } = this.data;
         if (!inputText) {
             wx.showToast({
@@ -55,10 +93,10 @@ Page({
             return;
         }
 
-        ExtarctWord(inputText)
-            .then(ExtarctedContent => {
+        ExtractWord(inputText)
+            .then(extractedContent => {
                 this.setData({
-                    keywords: JSON.parse(ExtarctedContent)
+                    keywords: JSON.parse(extractedContent)
                 });
             })
             .catch(err => {
@@ -70,6 +108,7 @@ Page({
                 });
             });
     },
+
     onSyntacticAnalysis() {
         const { inputText } = this.data;
         if (!inputText) {
@@ -82,9 +121,9 @@ Page({
         }
 
         SyntacticAnalysis(inputText)
-            .then(ExtarctedContent => {
+            .then(extractedContent => {
                 this.setData({
-                    syntacticAnalysis: JSON.parse(ExtarctedContent)
+                    syntacticAnalysis: JSON.parse(extractedContent)
                 });
             })
             .catch(err => {
@@ -96,6 +135,7 @@ Page({
                 });
             });
     },
+
     onCulturalBackground() {
         const { inputText } = this.data;
         if (!inputText) {
@@ -108,9 +148,9 @@ Page({
         }
 
         CulturalBackground(inputText)
-            .then(ExtarctedContent => {
+            .then(extractedContent => {
                 this.setData({
-                    culturalBackground: JSON.parse(ExtarctedContent)
+                    culturalBackground: JSON.parse(extractedContent)
                 });
             })
             .catch(err => {
@@ -122,6 +162,7 @@ Page({
                 });
             });
     },
+
     onSummary() {
         const { inputText } = this.data;
         if (!inputText) {
@@ -134,9 +175,9 @@ Page({
         }
 
         Summary(inputText)
-            .then(ExtarctedContent => {
+            .then(extractedContent => {
                 this.setData({
-                    summary: ExtarctedContent
+                    summary: extractedContent
                 });
             })
             .catch(err => {
@@ -149,4 +190,3 @@ Page({
             });
     }
 });
-
