@@ -101,7 +101,7 @@ Page({
                 success: (res) => {  // 使用箭头函数
                   if (res.data.err_no === 0) {
                     this.setData({ result: res.data.result[0] });
-                    app.globalData.asrResult = result;
+                    app.globalData.asrResult = res.data.result[0];
                     this.translate(res.data.result[0], { from: this.data.sourceLanguage, to: this.data.targetLanguage });
                   } else {
                     console.error('识别错误:', res.data.err_msg);

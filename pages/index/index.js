@@ -65,9 +65,15 @@ Page({
             itemList: ['显示 ASR 结果', '显示 OCR 结果'],
             success: (res) => {
                 if (res.tapIndex === 0 && asrInput) {
-                    this.setData({ displayResult: asrInput });
+                    this.setData({ 
+                        displayResult: asrInput,
+                        inputText: asrInput // 确保 inputText 跟随 displayResult
+                     });
                 } else if (res.tapIndex === 1 && ocrInput) {
-                    this.setData({ displayResult: ocrInput });
+                    this.setData({ 
+                        displayResult: ocrInput,
+                        inputText: ocrInput // 确保 inputText 跟随 displayResult
+                     });
                 } else {
                     wx.showToast({
                         title: '没有可用的结果',

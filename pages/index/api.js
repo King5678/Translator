@@ -1,3 +1,4 @@
+
 const apiKey = 'sk-4fdba1b308d34ebeb4a389e6265136c4';
 
 export function translate(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto' }) {
@@ -51,7 +52,7 @@ export function translate(q, { from = 'auto', to = 'auto' } = { from: 'auto', to
     });
 }
 
-export function ExtarctWord(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto' }) {
+export function ExtractWord(q, { from = 'auto', to = 'auto' } = { from: 'auto', to: 'auto' }) {
     return new Promise((resolve, reject) => {
         // 设置请求的 payload 数据
         const payload = {

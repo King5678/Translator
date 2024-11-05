@@ -26,7 +26,7 @@
 
     <!-- 提取关键词 -->
     <view class="keyword-container">
-        <button bindtap="onExtarctWord" class="extract-button">提取关键词</button>
+        <button bindtap="onExtractWord" class="extract-button">提取关键词</button>
         <text class="section-title">关键词列表</text>
         <block wx:for="{{keywords}}" wx:key="id">
             <view class="keyword-item">
