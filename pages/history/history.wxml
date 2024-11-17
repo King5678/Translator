@@ -1,0 +1,14 @@
+<view class="container">
+    <view class="header">历史记录</view>
+    <view class="history-list">
+        <block wx:for="{{historyList}}" wx:key="index">
+            <view class="history-item">
+                <text>{{index + 1}}. {{item}}</text>
+            </view>
+        </block>
+        <view wx:if="{{historyList.length === 0}}" class="empty">
+            <text>暂无历史记录</text>
+        </view>
+    </view>
+    <button class="clear-button" bindtap="clearHistory">清空历史</button>
+</view>

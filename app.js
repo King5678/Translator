@@ -1,4 +1,3 @@
-//app.js
 App({
   onLaunch: function () {
     // 展示本地存储能力
@@ -8,42 +7,53 @@ App({
         this.globalData.history = res.data
       },
       fail: (res) => {
-        console.log("get storage failed")
-        console.log(res)
-        this.globalData.history = []
+        console.log("get storage failed");
+        console.log(res);
+        // 初始化 history 并存储到本地
+        this.globalData.history = [];
+        wx.setStorage({
+          key: 'history',
+          data: this.globalData.history,
+          success: () => {
+            console.log("Initialized history in local storage.");
+          },
+          fail: (err) => {
+            console.log("Failed to initialize history.");
+            console.log(err);
+          }
+        });
       }
-    })
+    });
   },
-  // 权限询问
+
   getRecordAuth: function () {
     wx.getSetting({
       success(res) {
-        console.log("succ")
-        console.log(res)
+        console.log("succ");
+        console.log(res);
         if (!res.authSetting['scope.record']) {
           wx.authorize({
             scope: 'scope.record',
             success() {
-              // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-              console.log("succ auth")
+              console.log("succ auth");
             },
             fail() {
-              console.log("fail auth")
+              console.log("fail auth");
             }
-          })
+          });
         } else {
-          console.log("record has been authed")
+          console.log("record has been authed");
         }
       },
       fail(res) {
-        console.log("fail")
-        console.log(res)
+        console.log("fail");
+        console.log(res);
       }
-    })
+    });
   },
 
   onHide: function () {
-    wx.stopBackgroundAudio()
+    wx.stopBackgroundAudio();
   },
 
   globalData: {
@@ -52,4 +62,4 @@ App({
     asrResult: '',
     ocrResult: ''
   }
-})
+});
