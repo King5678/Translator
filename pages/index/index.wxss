@@ -1,7 +1,100 @@
 .container {
-    padding: 20px;
-    background-color: #f9f9f9;
+    padding: 15px;
+    background-color: #f5f5f5;
+    margin: 0 auto;
 }
+
+/* 主容器样式 */
+.language-switch-container {
+    display: flex; /* 使用 Flex 布局 */
+    flex-direction: row; /* 确保水平布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: space-between; /* 左右两侧均匀分布 */
+    padding: 20rpx; /* 内边距 */
+    background-color: #f5f5f5; /* 背景颜色 */
+    border-radius: 16rpx; /* 圆角 */
+    box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    margin: 20rpx auto; /* 水平居中并留出外边距 */
+    width: 90%; /* 容器宽度，占据屏幕的 90% */
+}
+
+/* 左右语言区域样式 */
+.language-item {
+    display: flex; /* 使用 Flex 布局 */
+    flex-direction: row; /* 确保图标和文字水平排列 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    flex: 1; /* 左右语言部分等宽 */
+    text-align: center; /* 文本居中 */
+}
+
+/* 图标样式 */
+.language-icon {
+    width: 40rpx; /* 图标大小 */
+    height: 40rpx;
+    margin-right: 10rpx; /* 图标与文字的间距 */
+}
+
+/* 文字样式 */
+.language-text {
+    font-size: 28rpx; /* 字体大小 */
+    color: #333333; /* 字体颜色 */
+}
+
+/* 中间切换按钮样式 */
+.switch-button {
+    display: flex; /* 使用 Flex 布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    flex: 0 0 auto; /* 防止按钮拉伸 */
+    margin: 0 20rpx; /* 与左右两侧语言部分的间距 */
+}
+
+.switch-icon {
+    width: 50rpx; /* 切换按钮大小 */
+    height: 50rpx;
+}
+
+
+  
+/* 顶部容器 */
+.header-container {
+    display: flex; /* 使用 flex 布局 */
+    justify-content: space-between; /* 左右对齐 */
+    align-items: center; /* 垂直居中 */
+    padding: 10px 20px; /* 添加内边距 */
+    width: 100%;
+    height: 100px; /* 可根据需求调整 */
+    background-color: #f5f5f5; /* 独立区域背景色，可调整 */
+    /*border-bottom: 1px solid #ddd;  添加底部边框 */
+}
+
+/* Logo 图片 */
+.logo {
+    /*position: fixed;*/
+  display: flex;
+  margin-top: 20rpx;
+  width: 150rpx;
+  height: 150rpx;
+  left: 40rpx;
+  top: 40rpx;
+
+}
+
+/* 背景图片 */
+.background {
+  /*position: fixed;*/
+  display: flex;
+  width: 200rpx;
+  
+  height: 200rpx;
+  right: 20rpx;
+  top: 35rpx; 
+  /*margin-right: 70rpx;*/ 
+
+}
+
+
 
 .import-button {
     background-color: #4a90e2;
@@ -23,8 +116,16 @@
 
 
 .section-title {
-    font-size: 18px;
-    font-weight: bold;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.result-title {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
     margin-bottom: 10px;
 }
 
@@ -40,7 +141,7 @@
 }
 
 .input-field {
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -50,12 +151,12 @@
 .translate-button,
 .extract-button,
 .syntax-button {
-    width: 100%;
+    width: 80%;
     padding: 10px;
     background-color: #007aff;
     color: #ffffff;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
 }
 
@@ -70,8 +171,8 @@
 
 /* 词汇标题样式 */
 .keyword-title {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 500;
     color: #333;
     margin-bottom: 6px;
 }

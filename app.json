@@ -2,8 +2,10 @@
   "pages": [
     "pages/index/index",
     "pages/OCR/OCR",
-    "pages/ASR/ASR"
-  ],
+    "pages/ASR/ASR",
+    "pages/history/history",
+    "pages/choose_language/choose_language"
+],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#1493FC",
@@ -36,6 +38,11 @@
         "pagePath": "pages/ASR/ASR",
         "iconPath": "imgs/ASR.png",
         "selectedIconPath": "imgs/ASR.png"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "iconPath": "imgs/history.png",
+        "selectedIconPath": "imgs/history.png"
       }
     ]
   }
