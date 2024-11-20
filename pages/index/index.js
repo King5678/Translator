@@ -11,14 +11,21 @@ Page({
         summary: '',
         asrInput: '',
         ocrInput: '',
-        displayResult: ''
+        displayResult: '',
+        history:[]
+    },
+    navigateToLanguageSelection() {
+        wx.navigateTo({
+          url: '../../pages/choose_language/choose_language', // 根据语言选择页面的路径修改
+        });
     },
 
     onShow() {
         const app = getApp();
         this.setData({
             asrInput: app.globalData.asrResult || '', // 确保有默认值
-            ocrInput: app.globalData.ocrResult || ''  // 确保有默认值
+            ocrInput: app.globalData.ocrResult || '',  // 确保有默认值
+            history: app.globalData.history || []
         });
     },
     
@@ -30,7 +37,9 @@ Page({
     },
 
     onTranslate() {
+        const app = getApp(); // 获取全局对象
         const { inputText } = this.data;
+    
         if (!inputText) {
             wx.showToast({
                 title: '请输入文本',
@@ -39,11 +48,26 @@ Page({
             });
             return;
         }
-
+    
         translate(inputText)
             .then(translatedContent => {
                 this.setData({
                     translatedText: translatedContent
+                });
+    
+                // 将输入内容保存到全局变量 history[]
+                app.globalData.history.unshift(inputText);
+    
+                // 同步保存到本地存储
+                wx.setStorage({
+                    key: 'history',
+                    data: app.globalData.history,
+                    success: () => {
+                        console.log('Input saved successfully!');
+                    },
+                    fail: (err) => {
+                        console.error('Failed to save input:', err);
+                    }
                 });
             })
             .catch(err => {
@@ -54,15 +78,15 @@ Page({
                     duration: 3000
                 });
             });
-    },
+    },    
 
     chooseResult() {
-        const { asrInput, ocrInput } = this.data;
+        const { asrInput, ocrInput,history } = this.data;
         console.log('ASR Input:', asrInput);
         console.log('OCR Input:', ocrInput);
         
         wx.showActionSheet({
-            itemList: ['显示 ASR 结果', '显示 OCR 结果'],
+            itemList: ['导入 ASR 结果', '导入 OCR 结果', '导入 历史记录'],
             success: (res) => {
                 if (res.tapIndex === 0 && asrInput) {
                     this.setData({ 
@@ -73,6 +97,11 @@ Page({
                     this.setData({ 
                         displayResult: ocrInput,
                         inputText: ocrInput // 确保 inputText 跟随 displayResult
+                     });
+                }  else if (res.tapIndex === 2 && history.length > 0) {
+                    this.setData({ 
+                        displayResult: history[0],
+                        inputText: history[0] // 确保 inputText 跟随 displayResult
                      });
                 } else {
                     wx.showToast({

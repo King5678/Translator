@@ -1,4 +1,34 @@
+
+
 <view class="container">
+   <!-- 页面顶部的图片容器 -->
+<view class="header-container" style="height: 308rpx; display: flex; box-sizing: border-box">
+    <image class="logo" src="../../imgs/logo.png"></image>
+    <image class="background" src="../../imgs/background.png"></image>
+</view> 
+
+<view class="language-switch-container">
+  <!-- 左侧语言 -->
+  <view class="language-item">
+    <image class="language-icon" src="../../imgs/中文.png" />
+    <text class="language-text">中文</text>
+    <text class="iconfont icon-down"></text>
+  </view>
+
+  <!-- 中间切换按钮 -->
+  <view class="switch-button" bindtap="navigateToLanguageSelection">
+    <image src="../../imgs/switch.png" class="switch-icon" />
+  </view>
+
+  <!-- 右侧语言 -->
+  <view class="language-item">
+    <image class="language-icon" src="../../imgs/英语.png" />
+    <text class="language-text">英语</text>
+    <text class="iconfont icon-down"></text>
+  </view>
+</view>
+
+
 <!-- 输入框区域 -->
 <view class="input-container">
     <text class="section-title">翻译文本</text>
@@ -39,7 +69,7 @@
     <!-- 句法分析 -->
     <view class="syntax-container">
         <button bindtap="onSyntacticAnalysis" class="syntax-button">句法分析</button>
-        <text class="section-title">句法分析结果</text>
+        <!-- <text class="section-title">句法分析结果</text>-->
         
         <view class="keyword-item">
             <text class="keyword-title">句子结构:</text>
