@@ -4,8 +4,9 @@
     "pages/OCR/OCR",
     "pages/ASR/ASR",
     "pages/history/history",
-    "pages/choose_language/choose_language"
-],
+    "pages/choose_language/choose_language",
+    "pages/history/history"
+  ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#1493FC",
