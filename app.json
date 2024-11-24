@@ -4,8 +4,7 @@
     "pages/OCR/OCR",
     "pages/ASR/ASR",
     "pages/history/history",
-    "pages/choose_language/choose_language",
-    "pages/history/history"
+    "pages/choose_language/choose_language"
   ],
   "window": {
     "backgroundTextStyle": "light",
