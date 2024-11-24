@@ -14,11 +14,6 @@ Page({
         displayResult: '',
         history:[]
     },
-    navigateToLanguageSelection() {
-        wx.navigateTo({
-          url: '../../pages/choose_language/choose_language', // 根据语言选择页面的路径修改
-        });
-    },
 
     onShow() {
         const app = getApp();
@@ -36,9 +31,23 @@ Page({
         });
     },
 
+    onSourceLanguageChange(e) {
+        const languages = ['zh', 'en']; // 对应的语言代码
+        this.setData({
+            sourceLanguage: languages[e.detail.value]
+        });
+    },
+    
+    onTargetLanguageChange(e) {
+        const languages = ['zh', 'en']; // 对应的语言代码
+        this.setData({
+            targetLanguage: languages[e.detail.value]
+        });
+    },    
+
     onTranslate() {
         const app = getApp(); // 获取全局对象
-        const { inputText } = this.data;
+        const { inputText, sourceLanguage, targetLanguage } = this.data;
     
         if (!inputText) {
             wx.showToast({
@@ -49,7 +58,7 @@ Page({
             return;
         }
     
-        translate(inputText)
+        translate(inputText, sourceLanguage, targetLanguage) // 添加语言参数
             .then(translatedContent => {
                 this.setData({
                     translatedText: translatedContent
@@ -78,7 +87,8 @@ Page({
                     duration: 3000
                 });
             });
-    },    
+    },
+    
 
     chooseResult() {
         const { asrInput, ocrInput,history } = this.data;

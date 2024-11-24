@@ -7,26 +7,22 @@
     <image class="background" src="../../imgs/background.png"></image>
 </view> 
 
-<view class="language-switch-container">
-  <!-- 左侧语言 -->
-  <view class="language-item">
-    <image class="language-icon" src="../../imgs/中文.png" />
-    <text class="language-text">中文</text>
-    <text class="iconfont icon-down"></text>
-  </view>
+<view class="language-selection">
+    <view class="dropdown">
+        <text class="dropdown-label">源语言</text>
+        <picker mode="selector" range="{{['中文', '英文']}}" bindchange="onSourceLanguageChange">
+            <view class="picker-text">{{sourceLanguage === 'zh' ? '中文' : '英文'}}</view>
+        </picker>
+    </view>
 
-  <!-- 中间切换按钮 -->
-  <view class="switch-button" bindtap="navigateToLanguageSelection">
-    <image src="../../imgs/switch.png" class="switch-icon" />
-  </view>
-
-  <!-- 右侧语言 -->
-  <view class="language-item">
-    <image class="language-icon" src="../../imgs/英语.png" />
-    <text class="language-text">英语</text>
-    <text class="iconfont icon-down"></text>
-  </view>
+    <view class="dropdown">
+        <text class="dropdown-label">目标语言</text>
+        <picker mode="selector" range="{{['中文', '英文']}}" bindchange="onTargetLanguageChange">
+            <view class="picker-text">{{targetLanguage === 'zh' ? '中文' : '英文'}}</view>
+        </picker>
+    </view>
 </view>
+
 
 
 <!-- 输入框区域 -->
