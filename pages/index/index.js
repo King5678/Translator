@@ -12,8 +12,21 @@ Page({
         asrInput: '',
         ocrInput: '',
         displayResult: '',
-        history:[]
-    },
+        history: [],
+        sourceLanguage: 'zh', // 默认中文
+        targetLanguage: 'en', // 默认英文
+        languages: [
+            { name: '中文', code: 'zh' },
+            { name: '英文', code: 'en' },
+            { name: '法语', code: 'fr' },
+            { name: '德语', code: 'de' },
+            { name: '西班牙语', code: 'es' },
+            { name: '日语', code: 'ja' },
+            { name: '韩语', code: 'ko' },
+            { name: '意大利语', code: 'it' },
+            { name: '俄语', code: 'ru' }
+        ]
+    },    
 
     onShow() {
         const app = getApp();
