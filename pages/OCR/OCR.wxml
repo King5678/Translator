@@ -1,18 +1,25 @@
 <view class="container">
+    <!-- 背景图片 -->
+    <image class="background-image" src="./background.jpg" mode="aspectFill"></image>
 
-    <!-- 显示上传的图片 -->
-    <view wx:if="{{src}}" class="image-container">
-        <image src="data:image/png;base64,{{src}}" class="uploaded-image" mode="aspectFit"></image>
-    </view>
+    <!-- 页面内容 -->
+    <view class="content">
+        <!-- 显示上传的图片 -->
+        <view wx:if="{{src}}" class="image-container">
+            <image src="data:image/png;base64,{{src}}" class="uploaded-image" mode="aspectFit"></image>
+        </view>
 
-    <!-- 上传图片按钮 -->
-    <button bindtap="uploadImg" class="upload-button">上传图片</button>
-    
-    <!-- 显示OCR结果 -->
-    <view class="result-container" wx:if="{{sourceText.length > 0}}">
-        <text class="result-title">识别结果：</text>
-        <block wx:for="{{sourceText}}" wx:key="index">
-            <text class="result-text">{{item}}</text>
-        </block>
+        <!-- 上传图片按钮 -->
+        <view class="button-container">
+            <button bindtap="uploadImg" class="upload-button">上传图片</button>
+        </view>
+        
+        <!-- 显示OCR结果 -->
+        <view class="result-container" wx:if="{{sourceText.length > 0}}">
+            <text class="result-title">识别结果：</text>
+            <block wx:for="{{sourceText}}" wx:key="index">
+                <text class="result-text">{{item}}</text>
+            </block>
+        </view>
     </view>
 </view>
