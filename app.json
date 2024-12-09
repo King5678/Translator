@@ -25,23 +25,23 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "imgs/index.png",
-        "selectedIconPath": "imgs/index.png"
+        "iconPath": "imgs/icon-1.png",
+        "selectedIconPath": "imgs/icon-1_1.png"
       },
       {
         "pagePath": "pages/OCR/OCR",
-        "iconPath": "imgs/OCR.png",
-        "selectedIconPath": "imgs/OCR.png"
+        "iconPath": "imgs/paizhao-xianxing.png",
+        "selectedIconPath": "imgs/paizhao.png"
       },
       {
         "pagePath": "pages/ASR/ASR",
-        "iconPath": "imgs/ASR.png",
-        "selectedIconPath": "imgs/ASR.png"
+        "iconPath": "imgs/maikefeng-xianxing.png",
+        "selectedIconPath": "imgs/maikefeng.png"
       },
       {
         "pagePath": "pages/history/history",
-        "iconPath": "imgs/history.png",
-        "selectedIconPath": "imgs/history.png"
+        "iconPath": "imgs/lishixiao.png",
+        "selectedIconPath": "imgs/lishixiao_1.png"
       }
     ]
   }

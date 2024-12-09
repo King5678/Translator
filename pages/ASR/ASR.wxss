@@ -41,7 +41,7 @@
 
 /* 按钮样式 */
 .record-button {
-    background-color: #4a90e2;
+    background-color: #2980b9;
     color: #fff;
     font-size: 24px;
     border: none;

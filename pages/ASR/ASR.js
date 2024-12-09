@@ -1,5 +1,5 @@
 const app = getApp();
-const apiKey = "sk-4fdba1b308d34ebeb4a389e6265136c4"; // 替换为实际的 API 密钥
+const apiKey = "sk-5275544707394201ac76ea70e7872f28"; // 替换为实际的 API 密钥
 
 Page({
   data: {

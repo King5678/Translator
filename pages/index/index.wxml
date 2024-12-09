@@ -1,110 +1,103 @@
-
-
 <view class="container">
    <!-- 页面顶部的图片容器 -->
-<view class="header-container" style="height: 308rpx; display: flex; box-sizing: border-box">
-    <image class="logo" src="../../imgs/logo.png"></image>
-    <image class="background" src="../../imgs/background.png"></image>
-</view> 
+   <view class="header-container">
+      <image class="logo" src="../../imgs/logo.png"></image>
+      <view class="background-wrapper">
+         <image class="background" src="../../imgs/background.png"></image>
+      </view>
+   </view>
 
-<view class="language-selection">
-    <view class="dropdown">
-        <text class="dropdown-label">源语言</text>
-        <picker mode="selector" range="{{['中文', '英文']}}" bindchange="onSourceLanguageChange">
+   <!-- 语言选择区域 -->
+   <view class="language-selection">
+      <view class="dropdown">
+         <text class="dropdown-label">源语言</text>
+         <picker mode="selector" range="{{['中文', '英文']}}" bindchange="onSourceLanguageChange">
             <view class="picker-text">{{sourceLanguage === 'zh' ? '中文' : '英文'}}</view>
-        </picker>
-    </view>
+         </picker>
+      </view>
 
-    <view class="dropdown">
-        <text class="dropdown-label">目标语言</text>
-        <picker mode="selector" range="{{['中文', '英文']}}" bindchange="onTargetLanguageChange">
+      <view class="dropdown">
+         <text class="dropdown-label">目标语言</text>
+         <picker mode="selector" range="{{['中文', '英文']}}" bindchange="onTargetLanguageChange">
             <view class="picker-text">{{targetLanguage === 'zh' ? '中文' : '英文'}}</view>
-        </picker>
-    </view>
-</view>
+         </picker>
+      </view>
+   </view>
 
+   <view class="import-container">
+      <button bindtap="chooseResult" class="import-button">导入</button>
+      <input value="{{displayResult}}" placeholder="选择一个结果显示" disabled class="import-input" />
+   </view>
 
+   <!-- 输入框区域 -->
+   <view class="input-container">
+      <text class="section-title">翻译文本</text>
+      <input placeholder="输入要翻译的文本" bindinput="onInput" class="input-field" value="{{displayResult}}" />
+      <button bindtap="onTranslate" class="translate-button">翻译</button>
+   </view>
 
-<!-- 输入框区域 -->
-<view class="input-container">
-    <text class="section-title">翻译文本</text>
-    <input 
-        placeholder="输入要翻译的文本" 
-        bindinput="onInput" 
-        class="input-field" 
-        value="{{displayResult}}"
-    />
-    <button bindtap="onTranslate" class="translate-button">翻译</button>
-</view>
+   <!-- 加载提示 -->
+   <view class="loading" wx:if="{{isLoading}}">
+      <image class="loading-icon" src="../../imgs/loading.gif"></image>
+   </view>
 
+   <!-- 结果显示 -->
+   <view class="result-container">
+      <text class="result-title">翻译结果：</text>
+      <text class="result-text">{{translatedText || '翻译结果将在这里显示'}}</text>
+   </view>
 
-<view class="container">
-  <button bindtap="chooseResult" class="import-button">导入</button>
-  <input value="{{displayResult}}" placeholder="选择一个结果显示" disabled />
-</view>
+   <!-- 提取关键词 -->
+   <view class="keyword-container">
+      <button bindtap="onExtractWord" class="extract-button">提取关键词</button>
+      <text class="section-title">关键词列表</text>
+      <block wx:for="{{keywords}}" wx:key="id">
+         <view class="keyword-item">
+            <text class="keyword-title">{{item.Word}}</text>
+            <text class="keyword-explanation">{{item.Explain}}</text>
+         </view>
+      </block>
+   </view>
 
+   <!-- 句法分析 -->
+   <view class="syntax-container">
+      <button bindtap="onSyntacticAnalysis" class="syntax-button">句法分析</button>
+      <view class="keyword-item">
+         <text class="keyword-title">句子结构:</text>
+         <text class="keyword-explanation">{{ syntacticAnalysis.sentence_structure }}</text>
+      </view>
+      <view class="keyword-item">
+         <text class="keyword-title">关键语法点:</text>
+         <block wx:for="{{ syntacticAnalysis.key_grammar_points }}" wx:key="index">
+            <text class="keyword-explanation">{{ item }}</text>
+         </block>
+      </view>
+      <view class="keyword-item">
+         <text class="keyword-title">例句:</text>
+         <text class="keyword-explanation">{{ syntacticAnalysis.example_sentence }}</text>
+      </view>
+   </view>
 
-    <!-- 翻译结果显示 -->
-    <view class="result-container">
-        <text class="result-title">翻译结果：</text>
-        <text class="result-text">{{translatedText}}</text>
-    </view>
-
-    <!-- 提取关键词 -->
-    <view class="keyword-container">
-        <button bindtap="onExtractWord" class="extract-button">提取关键词</button>
-        <text class="section-title">关键词列表</text>
-        <block wx:for="{{keywords}}" wx:key="id">
-            <view class="keyword-item">
-                <text class="keyword-title">{{item.Word}}</text>
-                <text class="keyword-explanation">{{item.Explain}}</text>
-            </view>
-        </block>
-    </view>
-
-    <!-- 句法分析 -->
-    <view class="syntax-container">
-        <button bindtap="onSyntacticAnalysis" class="syntax-button">句法分析</button>
-        <!-- <text class="section-title">句法分析结果</text>-->
-        
-        <view class="keyword-item">
-            <text class="keyword-title">句子结构:</text>
-            <text class="keyword-explanation">{{ syntacticAnalysis.sentence_structure }}</text>
-        </view>
-        
-        <view class="keyword-item">
-            <text class="keyword-title">关键语法点:</text>
-            <block wx:for="{{ syntacticAnalysis.key_grammar_points }}" wx:key="index">
-                <text class="keyword-explanation">{{ item }}</text>
+   <!-- 文化背景知识介绍 -->
+   <view class="culture-container">
+      <button bindtap="onCulturalBackground" class="extract-button">提取文化背景</button>
+      <text class="section-title">文化背景列表</text>
+      <block wx:for="{{culturalBackground}}" wx:key="id">
+         <view class="keyword-item">
+            <text class="keyword-title">{{item.name}}</text>
+            <text class="keyword-explanation">{{item.description}}</text>
+            <text class="section-title">相关词：</text>
+            <block wx:for="{{item.related_customs}}" wx:key="index">
+               <text class="keyword-explanation">- {{item}}</text>
             </block>
-        </view>
-        
-        <view class="keyword-item">
-            <text class="keyword-title">例句:</text>
-            <text class="keyword-explanation">{{ syntacticAnalysis.example_sentence }}</text>
-        </view>
-    </view>
+         </view>
+      </block>
+   </view>
 
-    <!-- 文化背景知识介绍 -->
-    <view class="keyword-container">
-        <button bindtap="onCulturalBackground" class="extract-button">提取文化背景</button>
-        <text class="section-title">文化背景列表</text>
-        <block wx:for="{{culturalBackground}}" wx:key="id">
-            <view class="keyword-item">
-                <text class="keyword-title">{{item.name}}</text>
-                <text class="keyword-explanation">{{item.description}}</text>
-                <text class="section-title">相关词：</text>
-                <block wx:for="{{item.related_customs}}" wx:key="index">
-                    <text class="keyword-explanation">- {{item}}</text>
-                </block>
-            </view>
-        </block>
-    </view>
-
-    <!-- 总结结果显示 -->
-    <view class="result-container">
-        <button bindtap="onSummary" class="translate-button">总结</button>
-        <text class="result-title">总结结果：</text>
-        <text class="result-text">{{summary}}</text>
-    </view>
+   <!-- 总结结果显示 -->
+   <view class="result-container">
+      <button bindtap="onSummary" class="translate-button">总结</button>
+      <text class="result-title">总结结果：</text>
+      <text class="result-text">{{summary || '总结结果将在这里显示'}}</text>
+   </view>
 </view>
