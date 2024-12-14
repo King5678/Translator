@@ -13,19 +13,8 @@ Page({
         ocrInput: '',
         displayResult: '',
         history: [],
-        sourceLanguage: 'zh', // 默认中文
-        targetLanguage: 'en', // 默认英文
-        languages: [
-            { name: '中文', code: 'zh' },
-            { name: '英文', code: 'en' },
-            { name: '法语', code: 'fr' },
-            { name: '德语', code: 'de' },
-            { name: '西班牙语', code: 'es' },
-            { name: '日语', code: 'ja' },
-            { name: '韩语', code: 'ko' },
-            { name: '意大利语', code: 'it' },
-            { name: '俄语', code: 'ru' }
-        ]
+        sourceLanguage: '中文', // 默认中文
+        targetLanguage: '英文', // 默认英文
     },    
 
     onShow() {
@@ -45,14 +34,14 @@ Page({
     },
 
     onSourceLanguageChange(e) {
-        const languages = ['zh', 'en']; // 对应的语言代码
+        const languages = ['中文', '英文']; // 对应的语言代码
         this.setData({
             sourceLanguage: languages[e.detail.value]
         });
     },
     
     onTargetLanguageChange(e) {
-        const languages = ['zh', 'en']; // 对应的语言代码
+        const languages = ['中文', '英文']; // 对应的语言代码
         this.setData({
             targetLanguage: languages[e.detail.value]
         });
