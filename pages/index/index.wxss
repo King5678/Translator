@@ -237,3 +237,29 @@
   font-size: 12px;
   color: #333;
 }
+
+/* 之前的样式保持不变 */
+
+/* ... 其他样式 ... */
+
+/* 复制按钮样式 */
+.copy-button {
+  width: 96%;
+  padding: 10px;
+  background-color: #2980b9; /* 与主题色保持一致 */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px; /* 与翻译结果文本隔开 */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  font-size: 14px;
+}
+
+.copy-button:hover {
+  background-color: #3498db; /* 悬停时加深颜色 */
+}
+
+.copy-button:active {
+  transform: scale(0.98); /* 按下时缩小 */
+}

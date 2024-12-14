@@ -1,14 +1,18 @@
 <view class="container">
-    <view class="header">历史记录</view>
-    <view class="history-list">
-        <block wx:for="{{historyList}}" wx:key="index">
-            <view class="history-item">
-                <text>{{index + 1}}. {{item}}</text>
-            </view>
-        </block>
-        <view wx:if="{{historyList.length === 0}}" class="empty">
-            <text>暂无历史记录</text>
+  <view class="header">历史记录</view>
+  <view class="history-list">
+    <block wx:for="{{historyList}}" wx:key="index">
+      <view class="history-item {{item.checked ? 'checked' : ''}}" bindtap="toggleCheck" data-index="{{index}}">
+        <icon wx:if="{{item.checked}}" type="success" size="20" color="#2980b9" />
+        <text class="{{item.checked ? 'checked-text' : ''}}">{{index + 1}}. {{item.text}}</text>
+        <view class="delete-icon" catchtap="deleteItem" data-index="{{index}}">
+          <icon type="clear" size="20" color="#ff4d4f" />
         </view>
+      </view>
+    </block>
+    <view wx:if="{{historyList.length === 0}}" class="empty">
+      <text>暂无历史记录</text>
     </view>
-    <button class="clear-button" bindtap="clearHistory">清空历史</button>
+  </view>
+  <button class="clear-button" bindtap="clearHistory">清空历史</button>
 </view>

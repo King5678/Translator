@@ -50,7 +50,27 @@ Page({
             sourceLanguage: languages[e.detail.value]
         });
     },
-    
+    onCopy() {
+      const textToCopy = this.data.translatedText;
+      if (textToCopy) {
+        wx.setClipboardData({
+          data: textToCopy,
+          success: () => {
+            wx.showToast({
+              title: '已复制',
+              icon: 'success',
+              duration: 1000
+            });
+          }
+        });
+      } else {
+        wx.showToast({
+          title: '没有翻译结果',
+          icon: 'none',
+          duration: 1000
+        });
+      }
+    },
     onTargetLanguageChange(e) {
         const languages = ['zh', 'en']; // 对应的语言代码
         this.setData({
