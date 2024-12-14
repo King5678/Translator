@@ -15,6 +15,7 @@ Page({
   onLoad() {
     this.initRecorder();
   },
+  
 
   initRecorder() {
     this.setData({
