@@ -1,5 +1,5 @@
 const app = getApp();
-const apiKey = "sk-5275544707394201ac76ea70e7872f28"; // 替换为实际的 API 密钥
+const apiKey = "#"; // 替换为实际的 API 密钥
 
 Page({
   data: {
@@ -15,7 +15,7 @@ Page({
   onLoad() {
     this.initRecorder();
   },
-  
+
 
   initRecorder() {
     this.setData({
@@ -50,8 +50,8 @@ Page({
 
   getAccessToken: function() {
     return new Promise((resolve, reject) => {
-      const AK = "ZvUFDMQBpRn2nVwfteh4qcMS"; 
-      const SK = "5CtKraOlQTiTrmGszUKwnmGE6MYt318Y";
+      const AK = "#"; 
+      const SK = "#";
 
       wx.request({
         url: 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + AK + '&client_secret=' + SK,

@@ -1,5 +1,5 @@
 
-const apiKey = 'sk-5275544707394201ac76ea70e7872f28';
+const apiKey = '#';
 
 export function translate(q,from,to) {
     return new Promise((resolve, reject) => {

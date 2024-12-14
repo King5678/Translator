@@ -92,8 +92,8 @@ Page({
     // 获取 Access Token 的函数
     getAccessToken: function() {
         return new Promise((resolve, reject) => {
-            var AK = "TJJjAJqv3G9Zu2LfPnXbEvcZ";
-            var SK = "qKO5IrEdywJUuNXSocdQJYYkD3fYRmB9";
+            var AK = "#";
+            var SK = "#";
 
             wx.request({
                 url: 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + AK + '&client_secret=' + SK,
