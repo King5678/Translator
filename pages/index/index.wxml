@@ -45,6 +45,7 @@
    <view class="result-container">
       <text class="result-title">翻译结果：</text>
       <text class="result-text">{{translatedText || '翻译结果将在这里显示'}}</text>
+      <button bindtap="onCopy" class="copy-button">复制</button>
    </view>
 
    <!-- 提取关键词 -->

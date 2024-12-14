@@ -1,49 +1,67 @@
 /* 全局样式继承 */
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #f9f9f9;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
 }
 
 .header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .history-list {
-    width: 100%;
-    max-width: 600px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px;
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
 
 .history-item {
-    padding: 10px;
-    border-bottom: 1px solid #eaeaea;
-    font-size: 16px;
+  display: flex; /* 使用flex布局 */
+  align-items: center; /* 垂直居中 */
+  padding: 10px;
+  border-bottom: 1px solid #eaeaea;
+  font-size: 16px;
 }
 
 .history-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .empty {
-    text-align: center;
-    color: #888;
-    padding: 20px;
+  text-align: center;
+  color: #888;
+  padding: 20px;
 }
 
 .clear-button {
-    margin-top: 20px;
-    background-color: #ff4d4f;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
+  margin-top: 20px;
+  background-color: #ff4d4f;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* 选中状态 */
+.history-item.checked {
+  background-color: #f0f0f0; /* 选中后的背景色 */
+}
+
+.checked-text {
+  text-decoration: line-through; /* 删除线效果 */
+  color: #888; /* 选中后的文字颜色 */
+}
+
+.delete-icon {
+  margin-left: auto; /* 将删除图标推到最右边 */
+  padding-left: 10px;
+  z-index: 10; /* 确保删除图标在最上层 */
 }
